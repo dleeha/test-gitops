@@ -56,7 +56,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ar2/test
+        ECR_REPOSITORY: ar2/testpub
 
       run: |
         # Build a docker container and push it to ECR

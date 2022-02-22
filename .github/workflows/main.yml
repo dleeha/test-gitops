@@ -55,8 +55,11 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ar2/testpub
+        #TEMP overwrite
+        ECR_REGISTRY: public.ecr.aws/n4u0p4g9
+
 
       run: |
         echo "dl::: ECR_REGISTRY: $ECR_REGISTRY"

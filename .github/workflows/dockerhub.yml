@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     ##dl:
-    name: building and pushing the page
+    name: building and pushing to dockerhub
     
     # The type of runner that the job will run on
     runs-on: ubuntu-latest

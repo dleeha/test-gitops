@@ -45,14 +45,11 @@ jobs:
         context: .
         push: true
         tags: ${{ env.IMAGE_NAME }}:${{ env.my_tag }}
-        #tags: dleeha/test-gitops:456
-        #tags: user/app:latest
-
 
     - name: Update Version
       run: |
           version=$(cat ./charts/helm-example/values.yaml | grep version: | awk '{print $2}')
-          sed -i "s/$version/${GITHUB_REF##*/}-${{ env.my_tag }}/" ./charts/helm-example/values.yaml
+          sed -i "s/$version/${GITHUB_REF##*/}-${my_tag}/" ./charts/helm-example/values.yaml
           
     - name: Commit and push changes
       uses: devops-infra/action-commit-push@v0.3

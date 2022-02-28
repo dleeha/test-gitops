@@ -5,9 +5,10 @@
 replicaCount: 1
 
 image:
-  pullPolicy: IfNotPresent
+  #pullPolicy: IfNotPresent
   #repository: 991204835536.dkr.ecr.ap-southeast-1.amazonaws.com/ar2/test
   #version: main-045d9ef
+  pullPolicy: Always
   repository: dleeha/test-gitops
   version: 123
 

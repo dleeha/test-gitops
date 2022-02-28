@@ -44,17 +44,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: testing123
-        run: |
-          echo "tags:::${{ steps.meta.outputs.tags }}"
-          echo "labels:::${{ steps.meta.outputs.labels }}"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }} #works
+          #tags: ${{ steps.meta.outputs.tags }} #works
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.my_tag }}
           #tags: ${{ env.my_tag }}
           #tags: ${{ github.repository }}:latest
           labels: ${{ steps.meta.outputs.labels }}

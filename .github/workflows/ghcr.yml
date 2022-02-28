@@ -51,5 +51,6 @@ jobs:
           context: .
           push: true
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: ${{ env.my_tag }}
+          #tags: ${{ env.my_tag }}
+          tags: ${{ github.repository }}:latest
           labels: ${{ steps.meta.outputs.labels }}

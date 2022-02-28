@@ -41,6 +41,29 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+
+
+
+    -
+      name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    -
+      name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: dleeha/test-gitops:456
+        #tags: user/app:latest
+
+
+
+
+
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -77,19 +100,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         commit_message: Version updated
-
-    -
-      name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    -
-      name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: dleeha/test-gitops:${GITHUB_REF##*/}-$git_hash
-        #tags: user/app:latest
 

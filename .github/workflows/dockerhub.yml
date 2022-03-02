@@ -51,6 +51,8 @@ jobs:
         #my_tag: ${{ env.my_tag }}
       run: |
           version=$(cat ./charts/helm-example/values.yaml | grep version: | awk '{print $2}')
+          echo "IMAGE_NAME:$IMAGE_NAME"
+          echo "my_tag:$my_tag"
           #new_tag=$(echo "$IMAGE_NAME:$my_tag")
           #echo "new_tag: $new_tag"
           #sed -i "s/$version/${GITHUB_REF##*/}-${my_tag}/" ./charts/helm-example/values.yaml

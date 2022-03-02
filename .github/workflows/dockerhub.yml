@@ -62,7 +62,7 @@ jobs:
           #sed -i "s/$version/${GITHUB_REF##*/}-${my_tag}/" ./charts/helm-example/values.yaml
 
           echo "final_tag here: ${final_tag}"
-          sed -i "s/$version/${final_tag}/" ./charts/helm-example/values.yaml
+          sed -i "s|$version|${final_tag}|" ./charts/helm-example/values.yaml
 
           #new_tag="test:${my_tag}"
           #echo "new_tag: ${new_tag}"

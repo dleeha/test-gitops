@@ -8,7 +8,7 @@ image:
   #repositoryOriginal: 991204835536.dkr.ecr.ap-southeast-1.amazonaws.com/ar2/test
   pullPolicy: Always
   repository: dleeha/test-gitops
-  version: test:acc1319
+  version: dleeha/test-gitops:8e30e96
 
 imagePullSecrets: []
 nameOverride: ""

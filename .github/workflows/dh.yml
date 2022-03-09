@@ -38,6 +38,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: setup structure
+      run: |
+        cd app
+        ln -s ../app3 .
+
     - name: ${{ matrix.build-dir }} - Set version info
       run: |
         cd ${{ matrix.build-dir }}
@@ -49,11 +54,6 @@ jobs:
         app_name="${folder##*/}"
 
         #echo "my_image=${{ env.image_prefix }}/${app_name}" >> $GITHUB_ENV
-
-    - name: setup structure
-      run: |
-        cd app
-        ln -s ../app3 .
 
     - name: ${{ matrix.build-dir }} - Build and push to docker hub
       uses: docker/build-push-action@v2

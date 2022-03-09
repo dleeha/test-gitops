@@ -41,7 +41,8 @@ jobs:
         echo "folder=${folder}"
         app_name="${folder##*/}"
 
-        echo "old_tag=${IMAGE_NAME}:${git_hash}" >> $GITHUB_ENV
+        echo "old_tag=${IMAGE_NAME}:${git_hash}"
+
         echo "final_tag=${app_name}:${git_hash}" >> $GITHUB_ENV
 
     - name: Login to DockerHub

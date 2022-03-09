@@ -100,6 +100,12 @@ jobs:
         echo "======"
         ls -al
         echo "========="
+        cd ..
+        pwd
+        echo "======"
+        ls -al
+        echo "========="
+
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3
       with:

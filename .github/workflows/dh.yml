@@ -45,7 +45,7 @@ jobs:
 
     - name: ${{ matrix.build-dir }} - Set version info
       run: |
-        cd ${{ matrix.build-dir }}
+        cd app/${{ matrix.build-dir }}
         git_hash=$(git rev-parse --short "$GITHUB_SHA")
         echo "my_tag=${GITHUB_REF##*/}-${git_hash}" >> $GITHUB_ENV
 

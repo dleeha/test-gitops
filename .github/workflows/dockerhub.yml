@@ -60,12 +60,12 @@ jobs:
       #env:
         #my_tag: ${{ env.my_tag }}
       run: |
-          version=$(cat ./app1/charts/values.yaml | grep version: | awk '{print $2}')         
+          version=$(cat ./app1/charts/app1/values.yaml | grep version: | awk '{print $2}')         
   
-          #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./app1/charts/values.yaml
+          #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./app1/charts/app1/values.yaml
 
           echo "final_tag here: ${final_tag}"
-          sed -i "s|$version|${final_tag}|" ./app1/charts/values.yaml
+          sed -i "s|$version|${final_tag}|" ./app1/charts/app1/values.yaml
           
     - name: Commit and push changes
       uses: devops-infra/action-commit-push@v0.3

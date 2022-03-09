@@ -129,6 +129,13 @@ jobs:
         name: ${{ env.app_name }}-artifact
         path: ./${{ env.app_name }}/charts/${{ env.app_name }}
 
+    - uses: actions/download-artifact@v3
+      env: 
+        app_name: app3
+      with:
+        name: ${{ env.app_name }}-artifact
+        path: ./${{ env.app_name }}/charts/${{ env.app_name }}
+
 
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3

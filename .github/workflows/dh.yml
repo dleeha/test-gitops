@@ -1,0 +1,70 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ 'main' ] # toggle activation
+
+  # Allows you to run this workflow manually from the Actions tab
+##  workflow_dispatch:
+
+env:
+  #REGISTRY: docker.io
+  #IMAGE_NAME: ${{ github.repository }}
+  image_prefix: docker.io/dleeha
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    name: building and pushing to DockerHub
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build-dir: ['app1','app2']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: ${{ matrix.build-dir }} - Set version info
+      run: |
+        cd ${{ matrix.build-dir }}
+        git_hash=$(git rev-parse --short "$GITHUB_SHA")
+        echo "my_tag=${GITHUB_REF##*/}-${git_hash}" >> $GITHUB_ENV
+
+        folder=$(pwd)
+        echo "folder=${folder}"
+        app_name="${folder##*/}"
+
+        echo "my_image=${{ env.image_prefix }}/${app_name}" >> $GITHUB_ENV
+
+
+    - name: ${{ matirx.build-dir }} - Build and push to docker hub
+      uses: docker/build-push-action@v2
+      with:
+        context: ./${{ matirx.build-dir }}
+        push: true
+        tags: ${{ env.my_image }}:${{ env.my_tag }}
+
+    - name: ${{ matirx.build-dir }} - Update Version in manifest
+      run: |
+          version=$(cat ./${{ matirx.build-dir }}/charts/${{ matirx.build-dir }}/values.yaml | grep version: | awk '{print $2}')
+          #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matirx.build-dir }}/charts/${{ matirx.build-dir }}/values.yaml
+          sed -i "s|$version|${my_image}:${my_tag}|" ./${{ matirx.build-dir }}/charts/${{ matirx.build-dir }}/values.yaml
+          
+    - name: ${{ matirx.build-dir }} - Commit and push changes
+      uses: devops-infra/action-commit-push@v0.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: Version updated
+
+    

@@ -103,21 +103,39 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - uses: actions/download-artifact@master
+
+
+
+    - env:
+        app_name: app1
+      run: rm ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - uses: actions/download-artifact@v3
       env: 
         app_name: app1
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
-    - run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
+        #path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - env:
+        app_name: app1
+      run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
 
-    - uses: actions/download-artifact@master
+
+
+
+    - env:
+        app_name: app2
+      run: rm ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - uses: actions/download-artifact@v3
       env: 
         app_name: app2
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
-    - run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
+        #path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - env:
+        app_name: app2
+      run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
+
+
 
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3

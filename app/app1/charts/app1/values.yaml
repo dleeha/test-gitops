@@ -8,7 +8,7 @@ image:
   #repositoryOriginal: 991204835536.dkr.ecr.ap-southeast-1.amazonaws.com/ar2/test
   pullPolicy: Always
   repository: dleeha/test-gitops
-  version: docker.io/dleeha/app1:main-ef51fed
+  version: docker.io/dleeha/app1:main-bf9d05e
 
 imagePullSecrets: []
 nameOverride: ""

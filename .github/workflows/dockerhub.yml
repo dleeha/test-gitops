@@ -43,7 +43,7 @@ jobs:
     - name: Build and push to docker hub
       uses: docker/build-push-action@v2
       with:
-        context: .
+        context: ./app1
         push: true
         tags: ${{ env.final_tag }}
         #tags: ${{ env.IMAGE_NAME }}:${{ env.my_tag }}

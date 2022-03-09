@@ -115,7 +115,6 @@ jobs:
       with:
         name: ${{ env.app_name }}-artifact
         path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
-    - run: cat ./values.yaml
     - env:
         app_name: app1
       run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
@@ -131,7 +130,7 @@ jobs:
         app_name: app2
       with:
         name: ${{ env.app_name }}-artifact
-        #path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
     - env:
         app_name: app2
       run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version

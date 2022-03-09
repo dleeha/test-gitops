@@ -64,15 +64,15 @@ jobs:
 
     - name: ${{ matrix.build-dir }} - Update Version in manifest
       run: |
-          version=$(cat ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml | grep version: | awk '{print $2}')
+          version=$(cat ./app/${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml | grep version: | awk '{print $2}')
           #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
-          sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
+          sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./app/${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
     - name: ${{ matrix.build-dir }} - Upload Artifact
       uses: actions/upload-artifact@master
       with:
         name: ${{ matrix.build-dir }}-artifact
-        path: ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
+        path: ./app/${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
 #    - uses: kanga333/variable-mapper@master
 #      id: export
@@ -107,6 +107,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+
+    - name: setup structure
+      run: |
+        cd app
+        ln -s ../app3 .
 
 
 

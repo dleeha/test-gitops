@@ -103,6 +103,10 @@ jobs:
         name: ${{ env.app_name }}-artifact
         path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
+    - name: teardown structure TEMP
+      run: |
+        cd app
+        rm app3
 
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3

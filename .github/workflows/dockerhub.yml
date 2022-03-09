@@ -58,7 +58,8 @@ jobs:
       with:
         context: ./app1
         push: true
-        tags: ${{ env.final_tag }}
+        tags: dleeha/app1:1234
+        #tags: ${{ env.final_tag }}
         #tags: ${{ env.IMAGE_NAME }}:${{ env.my_tag }}
 
     - name: Update Version in manifest

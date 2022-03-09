@@ -64,6 +64,12 @@ jobs:
           #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
           sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
+    - name: ${{ matrix.build-dir }} - Upload Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ matrix.build-dir }}-artifact
+        path: ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
+
 #    - uses: kanga333/variable-mapper@master
 #      id: export
 #      with:
@@ -94,17 +100,21 @@ jobs:
     name: updates manifest for k8s deployment
     runs-on: ubuntu-latest
     steps:
-    - name: list all
-      run: |
-        pwd
-        echo "======"
-        ls -al
-        echo "========="
-        cd ..
-        pwd
-        echo "======"
-        ls -al
-        echo "========="
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - uses: actions/upload-artifact@master
+      env: 
+        app_name: app1
+      with:
+        name: ${{ env.app_name }}-artifact
+        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - uses: actions/upload-artifact@master
+      env: 
+        app_name: app2
+      with:
+        name: ${{ env.app_name }}-artifact
+        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
 
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3

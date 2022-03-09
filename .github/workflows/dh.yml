@@ -114,7 +114,7 @@ jobs:
         app_name: app1
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+        path: ./${{ env.app_name }}/charts/${{ env.app_name }}
     - run: |
         pwd
         ls

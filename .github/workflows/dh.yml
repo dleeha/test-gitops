@@ -2,22 +2,15 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ 'main' ] # toggle activation
-
-  # Allows you to run this workflow manually from the Actions tab
-##  workflow_dispatch:
+    branches: [ 'main' ]
 
 concurrency:
   group: ci-tests-${{ github.ref }}-1
   cancel-in-progress: true
 
 env:
-  #REGISTRY: docker.io
-  #IMAGE_NAME: ${{ github.repository }}
   image_prefix: docker.io/dleeha
 
 jobs:
@@ -26,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build-dir: ['app1','app2', 'app3']
+        build-dir: ['app1', 'app2', 'app3']
 
     steps:
     - name: Checkout code
@@ -38,7 +31,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: setup structure
+    - name: setup structure TEMP
       run: |
         cd app
         ln -s ../app3 .
@@ -69,35 +62,12 @@ jobs:
           sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./app/${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
     - name: ${{ matrix.build-dir }} - Upload Artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.build-dir }}-artifact
         path: ./app/${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
-
-#    - uses: kanga333/variable-mapper@master
-#      id: export
-#      with:
-#        key: "${{github.base_ref}}"
-#        map: |
-#          {
-#            "master": {
-#              "environment": "production"
-#            },
-#            ".*": {
-#              "environment": "development"
-#            }
-#          }
-#        export_to: env,log,output
-#    - name: Echo environment and output
-#      run: |
-#        echo ${{ env.environment }}
-#        echo ${{ steps.export.outputs.environment }}          
-
-#    - name: ${{ matrix.build-dir }} - Commit and push changes
-#      uses: devops-infra/action-commit-push@v0.3
-#      with:
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        commit_message: Version updated
+        if-no-files-found: error
+        retention-days: 3
 
   update_manifest:
     needs: build
@@ -107,34 +77,31 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-
-    - name: setup structure
+    - name: setup structure TEMP
       run: |
         cd app
         ln -s ../app3 .
-
-
 
     - uses: actions/download-artifact@v3
       env: 
         app_name: app1
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}
+        path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
     - uses: actions/download-artifact@v3
       env: 
         app_name: app2
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}
+        path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
     - uses: actions/download-artifact@v3
       env: 
         app_name: app3
       with:
         name: ${{ env.app_name }}-artifact
-        path: ./${{ env.app_name }}/charts/${{ env.app_name }}
+        path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
 
     - name: Commit and push manifest changes

@@ -19,7 +19,7 @@ env:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    name: building and pushing to DockerHub
+    name: build push DockerHub
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -61,7 +61,18 @@ jobs:
           #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
           sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
           
-    - name: ${{ matrix.build-dir }} - Commit and push changes
+#    - name: ${{ matrix.build-dir }} - Commit and push changes
+#      uses: devops-infra/action-commit-push@v0.3
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
+#        commit_message: Version updated
+
+  update_manifest:
+    needs: build
+    name: updates manifest for k8s deployment
+    runs-on: ubuntu-latest
+    steps:
+    - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

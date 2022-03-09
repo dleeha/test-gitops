@@ -13,7 +13,8 @@ on:
 
 env:
   #REGISTRY: docker.io
-  IMAGE_NAME: ${{ github.repository }}
+  #IMAGE_NAME: ${{ github.repository }}
+  image_prefix: docker.io/dleeha
 
 jobs:
   # This workflow contains a single job called "build"
@@ -62,7 +63,7 @@ jobs:
       with:
         context: ./app1
         push: true
-        tags: dleeha/app1:1234
+        tags: ${{ env.image_prefix }}/app1:5678
         #tags: ${{ env.final_tag }}
         #tags: ${{ env.IMAGE_NAME }}:${{ env.my_tag }}
 

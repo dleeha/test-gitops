@@ -135,6 +135,9 @@ jobs:
         app_name: app2
       run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
 
+    
+    - run: cat ./values.yaml
+
 
 
     - name: Commit and push manifest changes

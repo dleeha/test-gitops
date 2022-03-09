@@ -103,18 +103,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - uses: actions/upload-artifact@master
+    - uses: actions/download-artifact@master
       env: 
         app_name: app1
       with:
         name: ${{ env.app_name }}-artifact
         path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
-    - uses: actions/upload-artifact@master
+    - run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
+
+    - uses: actions/download-artifact@master
       env: 
         app_name: app2
       with:
         name: ${{ env.app_name }}-artifact
         path: ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml
+    - run: cat ./${{ env.app_name }}/charts/${{ env.app_name }}/values.yaml | grep version
 
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3

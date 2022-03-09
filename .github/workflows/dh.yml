@@ -118,7 +118,7 @@ jobs:
     - run: |
         pwd
         ls
-        find /home/runner/work/test-gitops -type d -print
+        find /home/runner/work/test-gitops/test-gitops/app1 -print
         
     - env:
         app_name: app1

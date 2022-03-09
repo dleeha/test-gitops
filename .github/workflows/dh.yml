@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build-dir: ['app1','app2']
+        build-dir: ['app1','app2', 'app3']
 
     steps:
     - name: Checkout code
@@ -50,6 +50,10 @@ jobs:
 
         #echo "my_image=${{ env.image_prefix }}/${app_name}" >> $GITHUB_ENV
 
+    - name: setup structure
+      run: |
+        cd app
+        ln -s ../app3 .
 
     - name: ${{ matrix.build-dir }} - Build and push to docker hub
       uses: docker/build-push-action@v2

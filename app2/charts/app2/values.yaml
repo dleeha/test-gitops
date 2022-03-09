@@ -1,4 +1,4 @@
-# Default values for app3.
+# Default values for app2.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -8,7 +8,7 @@ image:
   #repositoryOriginal: 991204835536.dkr.ecr.ap-southeast-1.amazonaws.com/ar2/test
   pullPolicy: Always
   repository: dleeha/test-gitops
-  version: docker.io/dleeha/app3:main-6d58514
+  version: docker.io/dleeha/app2:main-6d58514
 
 imagePullSecrets: []
 nameOverride: ""

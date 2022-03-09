@@ -64,24 +64,25 @@ jobs:
           #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
           sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
-    - uses: kanga333/variable-mapper@master
-      id: export
-      with:
-        key: "${{github.base_ref}}"
-        map: |
-          {
-            "master": {
-              "environment": "production"
-            },
-            ".*": {
-              "environment": "development"
-            }
-          }
-        export_to: env,log,output
-    - name: Echo environment and output
-      run: |
-        echo ${{ env.environment }}
-        echo ${{ steps.export.outputs.environment }}          
+#    - uses: kanga333/variable-mapper@master
+#      id: export
+#      with:
+#        key: "${{github.base_ref}}"
+#        map: |
+#          {
+#            "master": {
+#              "environment": "production"
+#            },
+#            ".*": {
+#              "environment": "development"
+#            }
+#          }
+#        export_to: env,log,output
+#    - name: Echo environment and output
+#      run: |
+#        echo ${{ env.environment }}
+#        echo ${{ steps.export.outputs.environment }}          
+
 #    - name: ${{ matrix.build-dir }} - Commit and push changes
 #      uses: devops-infra/action-commit-push@v0.3
 #      with:
@@ -93,6 +94,12 @@ jobs:
     name: updates manifest for k8s deployment
     runs-on: ubuntu-latest
     steps:
+    - name: list all
+      run: |
+        pwd
+        echo "======"
+        ls -al
+        echo "========="
     - name: Commit and push manifest changes
       uses: devops-infra/action-commit-push@v0.3
       with:

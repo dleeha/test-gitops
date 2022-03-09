@@ -58,7 +58,7 @@ jobs:
     - name: ${{ matrix.build-dir }} - Build and push to docker hub
       uses: docker/build-push-action@v2
       with:
-        context: ./${{ matrix.build-dir }}
+        context: ./app/${{ matrix.build-dir }}
         push: true
         tags: ${{ env.image_prefix }}/${{ matrix.build-dir }}:${{ env.my_tag }}
 

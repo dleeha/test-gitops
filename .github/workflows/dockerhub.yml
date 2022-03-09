@@ -55,7 +55,7 @@ jobs:
 
     - name: final check
       run: |
-        echo "env final_tag: ${{ env.final_tag }}""
+        echo "env final_tag: ${{ env.final_tag }}"
 
     - name: Build and push to docker hub
       uses: docker/build-push-action@v2

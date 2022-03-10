@@ -47,11 +47,11 @@ jobs:
             if [ "$output" != "missing" ]; then
               echo -n ""
               if [ "$i" == "app1" ]; then
-                matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app1","app-dir":"app/"},'
+                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app1","app-dir":"app/"},'
               elif [ "$i" == "app2" ]; then
-                matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app2","app-dir":"app/"},'
-            #  elif [ "$i" == "app3" ]; then
-            #    matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app3","app-dir":""},'
+                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app2","app-dir":"app/"},'
+              elif [ "$i" == "app3" ]; then
+                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app3","app-dir":""},'
               fi
             fi
           done

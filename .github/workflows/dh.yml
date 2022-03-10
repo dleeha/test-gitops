@@ -67,9 +67,9 @@ jobs:
 
         output=$(grep "github1" ${HOME}/files.json)
         if [ "$output" != "" ]; then
-          echo "found"
+          status="found"
         else
-          echo "not found"
+          status="not found"
         fi
         echo "status: $status"
 

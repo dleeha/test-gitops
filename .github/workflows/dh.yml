@@ -65,7 +65,7 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        output=$(grep "github1" ${HOME}/files.json || echo "missing" )
+        output=$(grep "github1" ${HOME}/files.json || false )
         echo "output: $output"
         if [ "$output" != "" ]; then
           status="found"
@@ -76,10 +76,11 @@ jobs:
 
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
-        echo "::set-output name=packageJson::$status"
-    - name: print status
-      if: contains(env.CHANGED_STATUS, 'github')
+        echo "::set-output name=packageJson::$output"
+    - name: print status only if found
+      if: ${{ steps.set_var.output.packageJson }}
       run: |
+        echo "found"
         echo "${{ steps.set_var.outputs.packageJson }}"
 
     - name: Login to DockerHub

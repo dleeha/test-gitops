@@ -44,12 +44,14 @@ jobs:
           for i in app1 app2 app3; do
               echo "temp doing i: $i"
           done
+
+          #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
+
           for i in app1 app2 app3; do
-            #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
+            echo "doing i: $i"
             output=$(grep "$i" ${HOME}/files.json || echo "missing" )
             echo "output: $output"
             if [ "$output" != "missing" ]; then
-              echo "doing i: $i"
               if [ "$i" == "app1" ]; then
                 matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app1","app-dir":"app/"},'
               elif [ "$i" == "app2" ]; then

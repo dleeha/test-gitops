@@ -65,7 +65,7 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        output=$(grep 'github' ${HOME}/files.json)
+        output=$(grep "github1" ${HOME}/files.json)
         if [ "$output" != "" ]; then
           echo "found"
         else

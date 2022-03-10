@@ -1,7 +1,7 @@
 name: CI for dockerhub
 
 env:
-  ALL_APPS: "app1 app2 app3"
+  ALL_APPS: app1 app2 app3
   image_prefix: docker.io/dleeha
 
 on:

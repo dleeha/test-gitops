@@ -42,33 +42,21 @@ jobs:
     - name: read file
       id: set_var
       run: |
-        content=`cat ${HOME}/files.json`
-        content="${content//'%'/''}"
-        content="${content//$'\n'/''}"
-        content="${content//$'\r'/''}"
-        content="${content//'['/''}"
-        content="${content//']'/''}"
-        #content="${content//'%'/'%25'}"
-        #content="${content//$'\n'/'%0A'}"
-        #content="${content//$'\r'/'%0D'}"
-        echo "content: $content"
-
-        output=$(grep 'github' ${HOME}/files.json || echo "missing" )
+        output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
         if [ "$output" != "missing" ]; then
           output="found"
         fi
-        echo "output: $output"
+        echo "output: $output" #either found / missing
+        echo "::set-output name=${{ matrix.build-dir }}searchStatus::$output"
 
-        # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
-        #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
-        echo "::set-output name=packageJson::$output"
-    - name: print status only if found
-      if: steps.set_var.outputs.packageJson == 'found'
-      run: |
-        echo "found"
-        echo "${{ steps.set_var.outputs.packageJson }}"
+#    - name: print status only if found
+#      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
+#      run: |
+#        echo "found"
+#        echo "${{ steps.set_var.outputs.searchStatus }}"
 
     - name: Login to DockerHub
+      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -80,6 +68,7 @@ jobs:
 #        ln -s ../app3 .
 
     - name: ${{ matrix.build-dir }} - Set version info
+      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       run: |
         cd ${{ matrix.app-dir }}${{ matrix.build-dir }}
         git_hash=$(git rev-parse --short "$GITHUB_SHA")
@@ -92,6 +81,7 @@ jobs:
         #echo "my_image=${{ env.image_prefix }}/${app_name}" >> $GITHUB_ENV
 
     - name: ${{ matrix.build-dir }} - Build and push to docker hub
+      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       uses: docker/build-push-action@v2
       with:
         context: ./${{ matrix.app-dir }}${{ matrix.build-dir }}
@@ -99,12 +89,14 @@ jobs:
         tags: ${{ env.image_prefix }}/${{ matrix.build-dir }}:${{ env.my_tag }}
 
     - name: ${{ matrix.build-dir }} - Update Version in manifest
+      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       run: |
           version=$(cat ./${{ matrix.app-dir }}${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml | grep version: | awk '{print $2}')
           #sed -i "s|$version|${GITHUB_REF##*/}-${my_tag}|" ./${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
           sed -i "s|$version|${{ env.image_prefix }}/${{ matrix.build-dir }}:${my_tag}|" ./${{ matrix.app-dir }}${{ matrix.build-dir }}/charts/${{ matrix.build-dir }}/values.yaml
 
     - name: ${{ matrix.build-dir }} - Upload Artifact
+      if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.build-dir }}-artifact

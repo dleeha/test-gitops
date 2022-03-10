@@ -53,11 +53,13 @@ jobs:
       if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'
       run: |
         echo "found"
+        echo steps.set_var.outputs.${{ matrix.build-dir }}searchStatus
 
     - name: print status only if missing for ${{ matrix.build-dir }}
       if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'missing'
       run: |
         echo "missing"
+        echo steps.set_var.outputs.${{ matrix.build-dir }}searchStatus
 
     - name: Login to DockerHub
       if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'

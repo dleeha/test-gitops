@@ -44,6 +44,7 @@ jobs:
               echo "temp doing i: $i"
           done
 
+          echo "3=========="
 
           for i in app1 app2 app3; do
             echo "doing i: $i"

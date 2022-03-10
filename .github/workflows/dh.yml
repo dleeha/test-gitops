@@ -2,6 +2,7 @@ name: CI for dockerhub
 
 env:
   ALL_APPS: "app1 app2 app3"
+  image_prefix: docker.io/dleeha
 
 on:
   push:
@@ -30,8 +31,6 @@ concurrency:
   group: ci-tests-${{ github.ref }}-1
   cancel-in-progress: true
 
-env:
-  image_prefix: docker.io/dleeha
 
 defaults:
   run:

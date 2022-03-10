@@ -55,7 +55,7 @@ jobs:
 
           ALL_APPS="app1 app2 app3"
           if [ ! -z "${{ github.event.inputs.applist }}" ]; then
-            WANTED_APPS=${{ github.event.inputs.applist }}
+            WANTED_APPS="${{ github.event.inputs.applist }}"
           else
             WANTED_APPS=''
           fi

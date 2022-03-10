@@ -41,10 +41,11 @@ jobs:
           matrixStringifiedObject='{"include":['
           echo "2=========="
 
-          for i in app1 app2 app3; do
+          for i in "app1 app2 app3"; do
             #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
             output=$(grep "$i" ${HOME}/files.json || echo "missing" )
             if [ "$output" != "missing" ]; then
+              echo "doing i: $i"
               if [ "$i" == "app1" ]; then
                 matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app1","app-dir":"app/"},'
               elif [ "$i" == "app2" ]; then

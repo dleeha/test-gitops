@@ -50,11 +50,14 @@ jobs:
         #content="${content//$'\n'/'%0A'}"
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
-        echo $content | grep 'github'
+
+        status=$(echo $content | grep -q 'github')
+        echo "status: $status"
+
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
         echo "::set-output name=packageJson::$status"
-        echo "::set-env name=CHANGED_DATA::$content"
+        echo "::set-env name=CHANGED_DATA::${{ content }}"
     - name: print status
       if: contains(env.CHANGED_DATA, 'github')
       run: |

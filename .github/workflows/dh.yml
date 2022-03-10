@@ -9,7 +9,7 @@ on:
 #      - 'app3/**'
   workflow_dispatch:
     inputs:
-      app_list:
+      applist:
         description: 'list of apps to build'
         required: true
         type: choice
@@ -51,11 +51,11 @@ jobs:
           cat ${HOME}/files.json 
           echo "=========="
 
-          echo "manual appp_list: ${{ github.event.inputs.app_list }}"
+          echo "manual applist: ${{ github.event.inputs.applist }}"
 
           ALL_APPS="app1 app2 app3"
-          if [ ! -z "${{ github.event.inputs.app_list }}" ]; then
-            WANTED_APPS=${{ github.event.inputs.app_list }}
+          if [ ! -z "${{ github.event.inputs.applist }}" ]; then
+            WANTED_APPS=${{ github.event.inputs.applist }}
           else
             WANTED_APPS=''
           fi

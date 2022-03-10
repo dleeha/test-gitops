@@ -33,7 +33,7 @@ jobs:
     name: build push DockerHub
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(job1.outputs.matrix) }}
+      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
       #matrix:
         #include: []
           #- build-dir: app1

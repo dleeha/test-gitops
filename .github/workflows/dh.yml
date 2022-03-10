@@ -1,8 +1,10 @@
-name: CI
+name: CI for dockerhub
 
 on:
   push:
     branches: [ 'main' ]
+  workflow_dispatch:
+    
 
 concurrency:
   group: ci-tests-${{ github.ref }}-1

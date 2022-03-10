@@ -52,7 +52,7 @@ jobs:
           echo "=========="
 
           ALL_APPS="app1 app2 app3"
-          if [ ! -z ${{ github.event.inputs.app_list }} ]; then
+          if [ ! -z "${{ github.event.inputs.app_list }}" ]; then
             WANTED_APPS=${{ github.event.inputs.app_list }}
           else
             WANTED_APPS=''

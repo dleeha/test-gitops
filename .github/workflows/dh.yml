@@ -65,7 +65,7 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        status=$(grep -q 'github' ${HOME}/files.json)
+        status=$(grep 'github' ${HOME}/files.json)
         echo "status: $status"
 
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"

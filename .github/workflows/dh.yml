@@ -30,6 +30,10 @@ concurrency:
 env:
   image_prefix: docker.io/dleeha
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   job1:
     name: pick out changes

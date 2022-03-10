@@ -65,7 +65,12 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        status=$(grep 'github' ${HOME}/files.json)
+        output=$(grep 'github' ${HOME}/files.json)
+        if [ "$output" != "" ]; then
+          echo "found"
+        else
+          echo "not found"
+        fi
         echo "status: $status"
 
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"

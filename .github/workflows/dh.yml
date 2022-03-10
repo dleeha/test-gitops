@@ -3,6 +3,9 @@ name: CI for dockerhub
 on:
   push:
     branches: [ 'main' ]
+    paths:
+      - 'app/**'
+      - 'app3/**'
   workflow_dispatch:
     
 

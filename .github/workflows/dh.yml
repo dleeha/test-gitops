@@ -110,6 +110,7 @@ jobs:
 
 
   build:
+    if: ${{ fromJson(needs.job1.outputs.matrix != '{"include":[]}' ) }}
     name: build push DockerHub
     runs-on: ubuntu-latest
     needs: job1

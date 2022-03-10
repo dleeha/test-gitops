@@ -27,7 +27,7 @@ jobs:
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
-           matrixStringifiedObject="{\"include\":[{\"build-dir\":\"app1\",\"app-dir\":\"app/\"},{\"build-dir\":\"app2\",\"app-dir\":\"app/\"}]}"
+           matrixStringifiedObject='{"include":[{"build-dir":"app1","app-dir":"app/"},{"build-dir":"app2","app-dir":"app/"}]}'
            echo "::set-output name=matrix::$matrixStringifiedObject"
   build:
     name: build push DockerHub

@@ -63,7 +63,7 @@ jobs:
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
         echo "::set-output name=packageJson::$output"
     - name: print status only if found
-      if: steps.set_var.output.packageJson == 'found'
+      if: steps.set_var.outputs.packageJson == 'found'
       run: |
         echo "found"
         echo "${{ steps.set_var.outputs.packageJson }}"

@@ -14,8 +14,13 @@ on:
         required: true
         type: choice
         options:
-        - gateway
-        - web
+        - app1
+        - app2
+        - app3
+        - app1 app2
+        - app1 app3
+        - app1 app2 app3
+        - app2 app3
     
 
 concurrency:
@@ -29,15 +34,9 @@ jobs:
   job1:
     name: pick out changes
     runs-on: ubuntu-latest
-    env:
-      APPS_TO_HANDLE: ${{ github.event.inputs.app_list }}
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
-      - name: print app list
-        run: |
-          echo "app_list: ${APPS_TO_HANDLE}"
-
       - name: get code changes
         uses: lots0logs/gh-action-get-changed-files@2.1.4
         with:
@@ -48,24 +47,30 @@ jobs:
           cat ${HOME}/files.json 
           echo "=========="
 
-
-          echo "1=========="
-          matrixStringifiedObject='{"include":['
-          echo "2=========="
-
-          for i in app1 app2 app3; do
-            echo "doing i: $i"
+          ALL_APPS="app1 app2 app3"
+          if [ ! -z ${{ github.event.inputs.app_list }} ]; then
+            WANTED_APPS=${{ github.event.inputs.app_list }}
+          else
+            WANTED_APPS=''
+          fi
+          echo "init WANTED_APPS: $WANTED_APPS"
+          for i in ${ALL_APPS[@]}; do
             output=$(grep "$i" ${HOME}/files.json || echo "missing")
             echo "output: $output"
             if [ "$output" != "missing" ]; then
-              echo -n ""
-              if [ "$i" == "app1" ]; then
-                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app1","app-dir":"app/"},'
-              elif [ "$i" == "app2" ]; then
-                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app2","app-dir":"app/"},'
-              elif [ "$i" == "app3" ]; then
-                matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app3","app-dir":""},'
-              fi
+              WANTED_APPS="${WANTED_APPS}"' '"$i"
+            fi
+          done
+
+          matrixStringifiedObject='{"include":['
+          for i in ${WANTED_APPS[@]}; do 
+            echo "doing wanted i: $i"
+            if [ "$i" == "app1" ]; then
+              matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app1","app-dir":"app/"},'
+            elif [ "$i" == "app2" ]; then
+              matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app2","app-dir":"app/"},'
+            elif [ "$i" == "app3" ]; then
+              matrixStringifiedObject="${matrixStringifiedObject}"'{"build-dir":"app3","app-dir":""},'
             fi
           done
           matrixStringifiedObject="${matrixStringifiedObject}"']}'

@@ -52,7 +52,7 @@ jobs:
 
   check-matrix:
     runs-on: ubuntu-latest
-    needs: matrix
+    needs: [matrix,job1]
     steps:
       - name: Install json2yaml
         run: |

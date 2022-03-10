@@ -65,7 +65,8 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        output=$(grep "github1" ${HOME}/files.json)
+        output=$(grep "github1" ${HOME}/files.json || echo "missing" )
+        echo "output: $output"
         if [ "$output" != "" ]; then
           status="found"
         else
@@ -76,7 +77,6 @@ jobs:
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
         echo "::set-output name=packageJson::$status"
-        echo "::set-env name=CHANGED_STATUS::$status"
     - name: print status
       if: contains(env.CHANGED_STATUS, 'github')
       run: |

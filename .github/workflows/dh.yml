@@ -39,9 +39,15 @@ jobs:
       uses: lots0logs/gh-action-get-changed-files@2.1.4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: chk code changes
+    - id: set_var
       run: |
-        cat ${HOME}/files.json
+        content=`cat ${HOME}/files.json`
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=packageJson::$content"
+    - run: |
+        echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
 
     - name: Login to DockerHub
       uses: docker/login-action@v1

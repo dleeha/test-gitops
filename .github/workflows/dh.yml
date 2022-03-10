@@ -42,6 +42,9 @@ jobs:
           echo "2=========="
 
           for i in "app1 app2 app3"; do
+              echo "temp doing i: $i"
+          done
+          for i in "app1 app2 app3"; do
             #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
             output=$(grep "$i" ${HOME}/files.json || echo "missing" )
             if [ "$output" != "missing" ]; then

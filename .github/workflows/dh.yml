@@ -63,7 +63,7 @@ jobs:
           fi
           echo "init WANTED_APPS: $WANTED_APPS"
           all_apps=${{ env.ALL_APPS }}
-          for i in ${all_apps[@]}; do
+          for i in "${all_apps[@]}"; do
             output=$(grep "$i" ${HOME}/files.json || echo "missing")
             echo "output: $output"
             if [ "$output" != "missing" ]; then

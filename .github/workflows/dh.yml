@@ -18,12 +18,24 @@ env:
   image_prefix: docker.io/dleeha
 
 jobs:
+  consolidate:
+    name: pick out changes
+    runs-on: ubuntu-latest
+    outputs:
+       matrix: ${{ steps.setmatrix.outputs.matrix }}
+    steps:
+      - name: Set Dynamic Matrix
+        id: setmatrix
+        run: |
+           matrixStringifiedObject="{\"include\":[{\"build-dir\":\"app1\",\"app-dir\":\"app/\"},{\"build-dir\":\"app2\",\"app-dir\":\"app/\"}]}"
+           echo "::set-output name=matrix::$matrixStringifiedObject"
   build:
     name: build push DockerHub
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        include: []
+      matrix: ${{ fromJson(needs.consolidate.outputs.matrix) }}
+      #matrix:
+        #include: []
           #- build-dir: app1
           #  app-dir: app/
           #- build-dir: app2

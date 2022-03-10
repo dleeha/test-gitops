@@ -41,14 +41,9 @@ jobs:
           echo "2=========="
 
           for i in app1 app2 app3; do
-              echo "temp doing i: $i"
-          done
-
-          echo "3=========="
-
-          for i in app1 app2 app3; do
+            echo "temp doing i: $i"
             echo "doing i: $i"
-            output=$(grep "$i" ${HOME}/files.json || echo "missing" )
+            output=$(grep "$i" ${HOME}/files.json || echo "missing")
             echo "output: $output"
             if [ "$output" != "missing" ]; then
               if [ "$i" == "app1" ]; then

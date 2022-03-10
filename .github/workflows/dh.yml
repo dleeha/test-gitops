@@ -30,7 +30,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: read file
-        id: set_var
+        id: setmatrix
         run: |
           cat ${HOME}/files.json 
           echo "=========="
@@ -60,12 +60,12 @@ jobs:
           echo "matrixString: $matrixStringifiedObject"
           echo "::set-output name=matrix::$matrixStringifiedObject"
 
-      - name: Set Dynamic Matrix
-        id: setmatrix
-        run: |
-           matrixStringifiedObject='{"include":[{"build-dir":"app1","app-dir":"app/"},{"build-dir":"app2","app-dir":"app/"},{"build-dir":"app3","app-dir":""}]}'
-           echo "matrixString: $matrixStringifiedObject"
-           echo "::set-output name=matrix::$matrixStringifiedObject"
+      #- name: Set Dynamic Matrix
+      #  id: setmatrix
+      #  run: |
+      #     matrixStringifiedObject='{"include":[{"build-dir":"app1","app-dir":"app/"},{"build-dir":"app2","app-dir":"app/"},{"build-dir":"app3","app-dir":""}]}'
+      #     echo "matrixString: $matrixStringifiedObject"
+      #     echo "::set-output name=matrix::$matrixStringifiedObject"
 
   matrix:
     runs-on: ubuntu-latest

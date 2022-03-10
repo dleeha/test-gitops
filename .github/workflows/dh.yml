@@ -47,10 +47,11 @@ jobs:
         #content="${content//$'\n'/'%0A'}"
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
-        echo "::set-output name=packageJson::$content"
-    - name: print file
+        grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" $content
+        echo "::set-output name=packageJson::$?"
+    - name: print status
       run: |
-        echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
+        echo "${{ steps.set_var.outputs.packageJson }}"
 
     - name: Login to DockerHub
       uses: docker/login-action@v1

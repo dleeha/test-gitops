@@ -65,20 +65,17 @@ jobs:
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
 
-        output=$(grep "github1" ${HOME}/files.json || false )
-        echo "output: $output"
-        if [ "$output" != "" ]; then
-          status="found"
-        else
-          status="not found"
+        output=$(grep "github1" ${HOME}/files.json || echo "missing" )
+        if [ "$output" != "missing" ]; then
+          output="found"
         fi
-        echo "status: $status"
+        echo "output: $output"
 
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
         echo "::set-output name=packageJson::$output"
     - name: print status only if found
-      if: ${{ steps.set_var.output.packageJson }}
+      if: ${{ steps.set_var.output.packageJson == "found" }}
       run: |
         echo "found"
         echo "${{ steps.set_var.outputs.packageJson }}"

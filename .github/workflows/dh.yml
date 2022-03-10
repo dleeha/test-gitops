@@ -24,6 +24,38 @@ jobs:
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
+
+      - name: get code changes
+        uses: lots0logs/gh-action-get-changed-files@2.1.4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: read file
+        id: set_var
+        run: |
+          cat ${HOME}/files.json 
+          echo "=========="
+
+           #matrixStringifiedObject='{"include":[{"build-dir":"app1","app-dir":"app/"},{"build-dir":"app2","app-dir":"app/"},{"build-dir":"app3","app-dir":""}]}'
+
+          matrixStringifiedObject='{"include":['
+          for i in app1 app2 app3; do
+            #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
+            output=$(grep "$i" ${HOME}/files.json || echo "missing" )
+            if [ "$output" != "missing" ]; then
+              if [ "$i" == "app1" ]; then
+                matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app1","app-dir":"app/"},'
+              elif [ "$i" == "app2" ]; then
+                matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app2","app-dir":"app/"},'
+              elif [ "$i" == "app2" ]; then
+                matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app3","app-dir":""},'
+              fi
+            fi
+          done
+          matrixStringifiedObject="${matrixStringifiedObject}"']}'
+
+          echo "matrixString: $matrixStringifiedObject"
+          echo "::set-output name=matrix::$matrixStringifiedObject"
+
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
@@ -39,7 +71,7 @@ jobs:
       - id: set-matrix
         run: |
           matrix=$((
-            echo '{ "install" : ['
+            echo '{ "include" : ['
             #sed -n "/^REVDEP *:= */ { s///; p }" revdep-dev/Makefile | sed 's/ /, /g' | xargs -n 1 echo | sed -r 's/^([^,]*)(,?)$/"\1"\2/'
             echo 'app1 app2 app3' | sed 's/ /, /g' | xargs -n 1 echo | sed -r 's/^([^,]*)(,?)$/"\1"\2/'
             echo " ]}"
@@ -90,21 +122,6 @@ jobs:
 
     steps:
 
-    - name: get code changes
-      uses: lots0logs/gh-action-get-changed-files@2.1.4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: read file
-      id: set_var
-      run: |
-        cat ${HOME}/files.json 
-        echo "=========="
-        output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
-        if [ "$output" != "missing" ]; then
-          output="found"
-        fi
-        echo "output: $output" #either found / missing
-        echo "::set-output name=${{ matrix.build-dir }}searchStatus::$output"
 
     - name: print status only if found for ${{ matrix.build-dir }}
       if: steps.set_var.outputs.${{ matrix.build-dir }}searchStatus == 'found'

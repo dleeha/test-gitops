@@ -199,6 +199,7 @@ jobs:
 #        ln -s ../app3 .
 
     - uses: actions/download-artifact@v3
+      continue-on-error: true
       env: 
         app_name: app1
       with:
@@ -206,6 +207,7 @@ jobs:
         path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
     - uses: actions/download-artifact@v3
+      continue-on-error: true
       env: 
         app_name: app2
       with:
@@ -213,6 +215,7 @@ jobs:
         path: ./app/${{ env.app_name }}/charts/${{ env.app_name }}
 
     - uses: actions/download-artifact@v3
+      continue-on-error: true
       env: 
         app_name: app3
       with:

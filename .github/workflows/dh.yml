@@ -39,9 +39,21 @@ jobs:
       uses: lots0logs/gh-action-get-changed-files@2.1.4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+    - id: files
+      uses: jitterbit/get-changed-files@v1
+    - run: |
+        for changed_file in ${{ steps.files.outputs.all }}; do
+          echo "Do something with this ${changed_file}."
+        done
     - name: read file
       id: set_var
       run: |
+        echo "===="
+        git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+        echo "===="
+
+        echo "===="
+
         content=`cat ${HOME}/files.json`
         content="${content//'%'/''}"
         content="${content//$'\n'/''}"

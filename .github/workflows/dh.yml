@@ -50,6 +50,7 @@ jobs:
         #content="${content//$'\n'/'%0A'}"
         #content="${content//$'\r'/'%0D'}"
         echo "content: $content"
+        echo $content | grep 'github'
         # $(echo $content | grep "${{ matrix.app-dir }}${{ matrix.build-dir }}"
         #contains( $content , "${{ matrix.app-dir }}${{ matrix.build-dir }}" )
         echo "::set-output name=packageJson::$status"

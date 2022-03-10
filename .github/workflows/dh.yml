@@ -36,7 +36,7 @@ defaults:
 
 jobs:
   job1:
-    name: pick out changes
+    name: create wanted app matrix
     runs-on: ubuntu-latest
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
@@ -50,6 +50,8 @@ jobs:
         run: |
           cat ${HOME}/files.json 
           echo "=========="
+
+          echo "manual appp_list: ${{ github.event.inputs.app_list }}"
 
           ALL_APPS="app1 app2 app3"
           if [ ! -z "${{ github.event.inputs.app_list }}" ]; then

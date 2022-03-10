@@ -45,6 +45,7 @@ jobs:
             output=$(grep "$i" ${HOME}/files.json || echo "missing")
             echo "output: $output"
             if [ "$output" != "missing" ]; then
+              echo "here"
             #  if [ "$i" == "app1" ]; then
             #    matrixStringifiedObject="${matrixStringifiedObject}'{"build-dir":"app1","app-dir":"app/"},'
             #  elif [ "$i" == "app2" ]; then

@@ -1,5 +1,8 @@
 name: CI for dockerhub
 
+env:
+  ALL_APPS: "app1 app2 app3"
+
 on:
   push:
     branches: [ 'main' ]
@@ -53,14 +56,14 @@ jobs:
 
           echo "manual applist: ${{ github.event.inputs.applist }}"
 
-          ALL_APPS="app1 app2 app3"
+          #ALL_APPS="app1 app2 app3"
           if [ ! -z "${{ github.event.inputs.applist }}" ]; then
             WANTED_APPS="${{ github.event.inputs.applist }}"
           else
             WANTED_APPS=''
           fi
           echo "init WANTED_APPS: $WANTED_APPS"
-          for i in ${ALL_APPS[@]}; do
+          for i in ${{ env.ALL_APPS[@] }}; do
             output=$(grep "$i" ${HOME}/files.json || echo "missing")
             echo "output: $output"
             if [ "$output" != "missing" ]; then

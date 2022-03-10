@@ -8,6 +8,14 @@ on:
 #      - 'app/**'
 #      - 'app3/**'
   workflow_dispatch:
+    inputs:
+      app_list:
+        description: 'list of apps to build'
+        required: true
+        type: choice
+        options:
+        - gateway
+        - web
     
 
 concurrency:
@@ -21,9 +29,14 @@ jobs:
   job1:
     name: pick out changes
     runs-on: ubuntu-latest
+    env:
+      APPS_TO_HANDLE: ${{ github.event.inputs.app_list }}
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
+      - name: print app list
+        run: |
+          echo "app_list: ${APPS_TO_HANDLE}"
 
       - name: get code changes
         uses: lots0logs/gh-action-get-changed-files@2.1.4

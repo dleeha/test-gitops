@@ -23,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - build-dir: app1
-            app-dir: app/
-          - build-dir: app2
-            app-dir: app/
-          - build-dir: app3
-            app-dir: ""
+        include: []
+          #- build-dir: app1
+          #  app-dir: app/
+          #- build-dir: app2
+          #  app-dir: app/
+          #- build-dir: app3
+          #  app-dir: ""
 
     steps:
 

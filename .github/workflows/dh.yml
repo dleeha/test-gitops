@@ -65,6 +65,13 @@ jobs:
           echo $matrix | jq .
           echo $matrix | json2yaml
 
+      - name: Check matrix definition 2
+        run: |
+          matrix='${{ needs.job1.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
 
   build:
     name: build push DockerHub

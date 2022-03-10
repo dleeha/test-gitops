@@ -47,6 +47,7 @@ jobs:
           for i in app1 app2 app3; do
             #output=$(grep "${{ matrix.app-dir }}${{ matrix.build-dir }}" ${HOME}/files.json || echo "missing" )
             output=$(grep "$i" ${HOME}/files.json || echo "missing" )
+            echo "output: $output"
             if [ "$output" != "missing" ]; then
               echo "doing i: $i"
               if [ "$i" == "app1" ]; then

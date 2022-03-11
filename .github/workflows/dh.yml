@@ -25,12 +25,10 @@ on:
         - app1 app3
         - app1 app2 app3
         - app2 app3
-    
 
 concurrency:
   group: ci-tests-${{ github.ref }}-1
   cancel-in-progress: true
-
 
 defaults:
   run:
@@ -43,19 +41,16 @@ jobs:
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
-      - name: get code changes
+      - name: get changed files
         uses: lots0logs/gh-action-get-changed-files@2.1.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: read file
+      - name: build matrix based on changes
         id: setmatrix
         run: |
           cat ${HOME}/files.json 
           echo "=========="
 
-          echo "manual applist: ${{ github.event.inputs.applist }}"
-
-          #ALL_APPS="app1 app2 app3"
           if [ ! -z "${{ github.event.inputs.applist }}" ]; then
             WANTED_APPS="${{ github.event.inputs.applist }}"
           else
